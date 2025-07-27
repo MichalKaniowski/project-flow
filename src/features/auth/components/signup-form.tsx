@@ -51,7 +51,7 @@ export const SignupForm = ({ toggleSignupMode }: SignupFormProps) => {
             <h1 className="font-bold text-foreground text-2xl">ProjectFlow</h1>
           </div>
           <p className="text-muted-foreground">
-            Welcome, let's create an account!
+            Welcome, let&apos;s create an account!
           </p>
         </div>
 

@@ -1,21 +1,4 @@
 import {
-  BarChart3,
-  Bell,
-  Calendar,
-  ChevronDown,
-  ChevronUp,
-  FolderKanban,
-  Home,
-  Inbox,
-  Plus,
-  Search,
-  Settings,
-  User2,
-  Users,
-} from "lucide-react";
-import type * as React from "react";
-
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -27,65 +10,30 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
   SidebarRail,
 } from "@/components/ui/primitives/sidebar";
+import { logout } from "@/features/auth/actions/logout";
+import {
+  ChevronDown,
+  ChevronUp,
+  FolderKanban,
+  Settings,
+  User2,
+} from "lucide-react";
+import { FaTasks } from "react-icons/fa";
+import { UserAvatar } from "./user-avatar";
 
 const data = {
   navMain: [
     {
-      title: "Dashboard",
-      url: "#",
-      icon: Home,
-      isActive: false,
-    },
-    {
-      title: "Projects",
-      url: "#",
-      icon: FolderKanban,
-      isActive: true,
-      items: [
-        {
-          title: "Website Redesign",
-          url: "#",
-          isActive: true,
-        },
-        {
-          title: "Mobile App",
-          url: "#",
-        },
-        {
-          title: "Marketing Campaign",
-          url: "#",
-        },
-      ],
-    },
-    {
       title: "Tasks",
-      url: "#",
-      icon: Inbox,
-    },
-    {
-      title: "Calendar",
-      url: "#",
-      icon: Calendar,
-    },
-    {
-      title: "Team",
-      url: "#",
-      icon: Users,
-    },
-    {
-      title: "Reports",
-      url: "#",
-      icon: BarChart3,
+      url: "/tasks",
+      icon: FaTasks,
+      isActive: true,
     },
   ],
 };
@@ -138,53 +86,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               {data.navMain.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild isActive={item.isActive}>
-                    <a href={item.url}>
-                      <item.icon />
+                    <a href={item.url} className="flex items-center gap-2">
+                      <item.icon style={{ width: 13, height: 13 }} />
                       <span>{item.title}</span>
                     </a>
                   </SidebarMenuButton>
-                  {item.items?.length ? (
-                    <SidebarMenuSub>
-                      {item.items.map((subItem) => (
-                        <SidebarMenuSubItem key={subItem.title}>
-                          <SidebarMenuSubButton
-                            asChild
-                            isActive={subItem.isActive}
-                          >
-                            <a href={subItem.url}>{subItem.title}</a>
-                          </SidebarMenuSubButton>
-                        </SidebarMenuSubItem>
-                      ))}
-                    </SidebarMenuSub>
-                  ) : null}
                 </SidebarMenuItem>
               ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-
-        <SidebarGroup>
-          <SidebarGroupLabel>Quick Actions</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton>
-                  <Plus />
-                  <span>New Task</span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton>
-                  <Search />
-                  <span>Search</span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton>
-                  <Bell />
-                  <span>Notifications</span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -199,13 +107,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   size="lg"
                   className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                 >
-                  {/* <Avatar className="rounded-lg w-8 h-8">
-                    <AvatarImage
-                      src="/placeholder.svg?height=32&width=32"
-                      alt="Avatar"
-                    />
-                    <AvatarFallback className="rounded-lg">JD</AvatarFallback>
-                  </Avatar> */}
+                  <UserAvatar />
                   <div className="flex-1 grid text-sm text-left leading-tight">
                     <span className="font-semibold truncate">John Doe</span>
                     <span className="opacity-70 text-xs truncate">
@@ -230,7 +132,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   Settings
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <span>Sign out</span>
+                  <button onClick={logout}>Sign out</button>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

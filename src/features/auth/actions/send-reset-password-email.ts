@@ -3,11 +3,11 @@
 import { ResetPasswordEmail } from "@/emails/reset-password-email";
 import { prisma } from "@/lib/prisma";
 import { render } from "@react-email/components";
-import sendgrid from "@sendgrid/mail";
 import React from "react";
+import { Resend } from "resend";
 import { forgotPasswordSchema, ForgotPasswordValues } from "../validation";
 
-sendgrid.setApiKey(process.env.SENDGRID_API_KEY || "");
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const sendResetPasswordEmail = async (values: ForgotPasswordValues) => {
   try {
@@ -37,15 +37,11 @@ export const sendResetPasswordEmail = async (values: ForgotPasswordValues) => {
       })
     );
 
-    const msg = {
+    await resend.emails.send({
+      from: "Project Pilot <onboarding@resend.dev>",
       to: validatedEmail,
-      from: "kaniowskimichal2@gmail.com",
       subject: "Reset your password",
       html: emailHtml,
-    };
-
-    sendgrid.send(msg).catch(() => {
-      return { error: "Something went wrong while sending an email" };
     });
   } catch (error) {
     console.log("Error in sendResetPasswordEmail action: ", error);

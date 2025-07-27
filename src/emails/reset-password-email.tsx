@@ -21,14 +21,14 @@ export const ResetPasswordEmail = ({
   return (
     <Html>
       <Head />
-      <Preview>X reset your password</Preview>
+      <Preview>Reset your password</Preview>
       <Body style={main}>
         <Container style={container}>
           <Section>
             <Text style={text}>Hi {userFirstname},</Text>
             <Text style={text}>
-              Someone recently requested a password change for your X account.
-              If this was you, you can set a new password here:
+              Someone recently requested a password change for your ProjectFlow
+              account. If this was you, you can set a new password here:
             </Text>
             <Button style={button} href={resetPasswordLink}>
               Reset password

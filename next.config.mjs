@@ -10,6 +10,7 @@ const nextConfig = {
     unoptimized: true,
     domains: ["lh3.googleusercontent.com"],
   },
+  devIndicators: false,
 };
 
 export default nextConfig;
