@@ -1,6 +1,9 @@
 "use client";
 
-import type { ToastActionElement, ToastProps } from "@/components/ui/toast";
+import type {
+  ToastActionElement,
+  ToastProps,
+} from "@/components/ui/primitives/toast";
 import { useEffect, useState } from "react";
 
 const TOAST_LIMIT = 1;

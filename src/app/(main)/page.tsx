@@ -1,5 +1,3 @@
-import { AppSidebar } from "../components/app-sidebar"
-import { KanbanBoard } from "../components/kanban-board"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -7,20 +5,28 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import { Separator } from "@/components/ui/separator"
-import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Search, Filter, Users, Calendar } from "lucide-react"
-import { ThemeToggle } from "../components/theme-toggle"
+} from "@/components/ui/primitives/breadcrumb";
+import { Button } from "@/components/ui/primitives/button";
+import { Input } from "@/components/ui/primitives/input";
+import { Separator } from "@/components/ui/primitives/separator";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/primitives/sidebar";
+import { logout } from "@/features/auth/actions/logout";
+import { Calendar, Filter, Search, Users } from "lucide-react";
+import { AppSidebar } from "../../components/app-sidebar";
+import { KanbanBoard } from "../../components/kanban-board";
+import { ThemeToggle } from "../../components/theme-toggle";
 
-export default function ProjectManagementTool() {
+export default async function ProjectManagementTool() {
   return (
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 border-b bg-background px-4">
+        <button onClick={logout}>logout</button>
+        <header className="flex items-center gap-2 bg-background px-4 border-b h-16 shrink-0">
           <div className="flex items-center gap-2">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4" />
@@ -37,33 +43,37 @@ export default function ProjectManagementTool() {
             </Breadcrumb>
           </div>
 
-          <div className="ml-auto flex items-center gap-2">
+          <div className="flex items-center gap-2 ml-auto">
             <ThemeToggle />
             <div className="relative">
-              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="Search tasks..." className="w-64 pl-8" />
+              <Search className="top-2.5 left-2 absolute w-4 h-4 text-muted-foreground" />
+              <Input placeholder="Search tasks..." className="pl-8 w-64" />
             </div>
             <Button variant="outline" size="sm">
-              <Filter className="h-4 w-4 mr-2" />
+              <Filter className="mr-2 w-4 h-4" />
               Filter
             </Button>
             <Button variant="outline" size="sm">
-              <Users className="h-4 w-4 mr-2" />
+              <Users className="mr-2 w-4 h-4" />
               Team
             </Button>
             <Button variant="outline" size="sm">
-              <Calendar className="h-4 w-4 mr-2" />
+              <Calendar className="mr-2 w-4 h-4" />
               Calendar
             </Button>
           </div>
         </header>
 
-        <div className="flex flex-1 flex-col">
-          <div className="border-b bg-background px-6 py-4">
-            <div className="flex items-center justify-between">
+        <div className="flex flex-col flex-1">
+          <div className="bg-background px-6 py-4 border-b">
+            <div className="flex justify-between items-center">
               <div>
-                <h1 className="text-2xl font-bold tracking-tight">Website Redesign</h1>
-                <p className="text-muted-foreground">Complete redesign of the company website with modern UI/UX</p>
+                <h1 className="font-bold text-2xl tracking-tight">
+                  Website Redesign
+                </h1>
+                <p className="text-muted-foreground">
+                  Complete redesign of the company website with modern UI/UX
+                </p>
               </div>
               <div className="flex items-center gap-2">
                 <Button variant="outline">Share</Button>
@@ -78,5 +88,5 @@ export default function ProjectManagementTool() {
         </div>
       </SidebarInset>
     </SidebarProvider>
-  )
+  );
 }

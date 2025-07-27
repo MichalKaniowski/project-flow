@@ -15,13 +15,12 @@ import {
 } from "lucide-react";
 import type * as React from "react";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/components/ui/primitives/dropdown-menu";
 import {
   Sidebar,
   SidebarContent,
@@ -37,7 +36,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   SidebarRail,
-} from "@/components/ui/sidebar";
+} from "@/components/ui/primitives/sidebar";
 
 const data = {
   navMain: [
@@ -200,13 +199,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   size="lg"
                   className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                 >
-                  <Avatar className="rounded-lg w-8 h-8">
+                  {/* <Avatar className="rounded-lg w-8 h-8">
                     <AvatarImage
                       src="/placeholder.svg?height=32&width=32"
                       alt="Avatar"
                     />
                     <AvatarFallback className="rounded-lg">JD</AvatarFallback>
-                  </Avatar>
+                  </Avatar> */}
                   <div className="flex-1 grid text-sm text-left leading-tight">
                     <span className="font-semibold truncate">John Doe</span>
                     <span className="opacity-70 text-xs truncate">

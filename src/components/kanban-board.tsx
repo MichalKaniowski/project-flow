@@ -1,13 +1,17 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/primitives/badge";
+import { Button } from "@/components/ui/primitives/button";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/primitives/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/components/ui/primitives/dropdown-menu";
 import {
   Calendar,
   MessageSquare,
@@ -284,12 +288,12 @@ export function KanbanBoard() {
                       )}
                     </div>
 
-                    <Avatar className="w-6 h-6">
+                    {/* <Avatar className="w-6 h-6">
                       <AvatarImage src="/placeholder.svg?height=24&width=24" />
                       <AvatarFallback className="text-xs">
                         {task.assignee.avatar}
                       </AvatarFallback>
-                    </Avatar>
+                    </Avatar> */}
                   </div>
                 </CardContent>
               </Card>

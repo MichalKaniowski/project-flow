@@ -1,0 +1,26 @@
+import { requiredString } from "@/lib/validation";
+import { z } from "zod";
+
+export const signUpSchema = z.object({
+  displayName: requiredString,
+  email: requiredString.email("Invalid email address"),
+  password: requiredString.min(8, "Must be at least 8 characters"),
+});
+export type SignUpValues = z.infer<typeof signUpSchema>;
+
+export const loginSchema = z.object({
+  email: requiredString.email("Invalid email address"),
+  password: requiredString,
+});
+export type LoginValues = z.infer<typeof loginSchema>;
+
+export const forgotPasswordSchema = z.object({
+  email: requiredString.email("Invalid email address"),
+});
+export type ForgotPasswordValues = z.infer<typeof forgotPasswordSchema>;
+
+export const resetPasswordSchema = z.object({
+  newPassword: requiredString.min(8, "Must be at least 8 characters"),
+  confirmNewPassword: requiredString.min(8, "Must be at least 8 characters"),
+});
+export type ResetPasswordValues = z.infer<typeof resetPasswordSchema>;
