@@ -198,9 +198,9 @@ const getPriorityColor = (priority: string) => {
 
 export function KanbanBoard() {
   return (
-    <div className="flex gap-6 p-6 h-full overflow-x-auto">
+    <div className="flex gap-6 w-full h-full overflow-x-scroll scrollbar-hide">
       {columns.map((column) => (
-        <div key={column.id} className="flex flex-col min-w-80">
+        <div key={column.id} className="flex flex-col min-w-80 overflow-y-auto">
           <div className="flex justify-between items-center mb-4">
             <div className="flex items-center gap-2">
               <h3 className="font-semibold text-gray-900 dark:text-gray-200">
@@ -215,7 +215,7 @@ export function KanbanBoard() {
             </Button>
           </div>
 
-          <div className="flex flex-col flex-1 gap-3">
+          <div className="flex flex-col flex-1 gap-3 overflow-y-auto scrollbar-hide">
             {column.tasks.map((task) => (
               <Card
                 key={task.id}

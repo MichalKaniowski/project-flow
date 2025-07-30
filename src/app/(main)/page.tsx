@@ -1,42 +1,23 @@
-import { DashboardHeader } from "@/components/dashboard-header";
+import { KanbanBoard } from "@/components/kanban-board";
+import { Navbar } from "@/components/navbar";
+import { SideNav } from "@/components/side-nav";
 import { Button } from "@/components/ui/primitives/button";
-import {
-  SidebarInset,
-  SidebarProvider,
-} from "@/components/ui/primitives/sidebar";
-import { AppSidebar } from "../../components/app-sidebar";
-import { KanbanBoard } from "../../components/kanban-board";
 
-export default async function ProjectManagementTool() {
+export default async function MainPage() {
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset>
-        <DashboardHeader />
+    <div className="relative flex flex-col w-screen h-screen">
+      <Navbar />
 
-        <div className="flex flex-col flex-1">
-          <div className="bg-background px-6 py-4 border-b">
-            <div className="flex justify-between items-center">
-              <div>
-                <h1 className="font-bold text-2xl tracking-tight">
-                  Website Redesign
-                </h1>
-                <p className="text-muted-foreground">
-                  Complete redesign of the company website with modern UI/UX
-                </p>
-              </div>
-              <div className="flex items-center gap-2">
-                <Button variant="outline">Share</Button>
-                <Button>Add Task</Button>
-              </div>
-            </div>
+      <div className="flex flex-1 overflow-hidden">
+        <SideNav />
+        <div className="flex-1 p-4 overflow-hidden">
+          <div className="flex justify-between items-center py-3">
+            <h1 className="font-semibold text-3xl">Tasks</h1>
+            <Button>Add Task</Button>
           </div>
-
-          <div className="flex-1 overflow-hidden">
-            <KanbanBoard />
-          </div>
+          <KanbanBoard />
         </div>
-      </SidebarInset>
-    </SidebarProvider>
+      </div>
+    </div>
   );
 }

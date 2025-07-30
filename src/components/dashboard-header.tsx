@@ -9,7 +9,6 @@ import {
 import { Button } from "@/components/ui/primitives/button";
 import { Input } from "@/components/ui/primitives/input";
 import { Separator } from "@/components/ui/primitives/separator";
-import { SidebarTrigger } from "@/components/ui/primitives/sidebar";
 import { Calendar, Filter, Search, Users } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
 
@@ -17,7 +16,6 @@ export const DashboardHeader = () => {
   return (
     <header className="flex items-center gap-2 bg-background px-4 border-b h-16 shrink-0">
       <div className="flex items-center gap-2">
-        <SidebarTrigger className="-ml-1" />
         <Separator orientation="vertical" className="mr-2 h-4" />
         <Breadcrumb>
           <BreadcrumbList>

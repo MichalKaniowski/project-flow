@@ -1,4 +1,6 @@
+import scrollbarHide from "tailwind-scrollbar-hide";
 import type { Config } from "tailwindcss";
+import tailwindAnimate from "tailwindcss-animate";
 
 const config: Config = {
   darkMode: ["class"],
@@ -91,6 +93,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  // plugins: [require("tailwindcss-animate"), require("tailwind-scrollbar-hide")],
+  plugins: [tailwindAnimate, scrollbarHide],
 };
 export default config;

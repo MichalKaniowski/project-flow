@@ -10,14 +10,14 @@ import { useSession } from "./providers/session-provider";
 export const UserAvatar = () => {
   const { user } = useSession();
   return (
-    <Avatar className="rounded-lg w-8 h-8">
+    <Avatar className="rounded-full w-8 h-8">
       <AvatarImage
         src={
           user?.avatarUrl ? user.avatarUrl : "/images/avatar-placeholder.png"
         }
         alt="Avatar"
       />
-      <AvatarFallback className="rounded-lg">Av</AvatarFallback>
+      <AvatarFallback className="rounded-full">Av</AvatarFallback>
     </Avatar>
   );
 };
