@@ -39,7 +39,6 @@ export const login = async (
     });
 
     if (!validPassword) {
-      console.log("HERE");
       return {
         error: "Incorrect email or password",
       };
@@ -59,5 +58,5 @@ export const login = async (
     };
   }
 
-  return redirect("/");
+  return redirect("/projects");
 };

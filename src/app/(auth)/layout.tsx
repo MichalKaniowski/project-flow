@@ -8,7 +8,7 @@ export default async function AuthLayout({
 }) {
   const { user } = await validateRequest();
 
-  if (user) redirect("/");
+  if (user) redirect("/projects");
 
   return <div className="min-h-screen">{children}</div>;
 }

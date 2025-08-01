@@ -54,5 +54,5 @@ export const signup = async (
     };
   }
 
-  return redirect("/");
+  return redirect("/projects");
 };

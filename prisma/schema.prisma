@@ -17,6 +17,7 @@ model User {
   passwordHash String?
   createdAt    DateTime @default(now())
 
+  projects            Project[]
   sessions            Session[]
   passwordResetTokens PasswordResetToken[]
 
@@ -25,22 +26,38 @@ model User {
 
 model Session {
   id        String   @id
-  userId    String
   expiresAt DateTime
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("sessions")
 }
 
 model PasswordResetToken {
   id        String   @id @default(cuid())
-  userId    String
   token     String   @unique
   createdAt DateTime @default(now())
   expiresAt DateTime
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("password_reset_tokens")
+}
+
+model Project {
+  id         String   @id @default(cuid())
+  name       String
+  abstract   String
+  targetUser String
+  pinned     Boolean  @default(false)
+  icon       String?
+  updatedAt  DateTime @updatedAt
+  createdAt  DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("projects")
 }

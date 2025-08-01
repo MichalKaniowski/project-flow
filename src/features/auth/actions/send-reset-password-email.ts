@@ -38,7 +38,7 @@ export const sendResetPasswordEmail = async (values: ForgotPasswordValues) => {
     );
 
     await resend.emails.send({
-      from: "Project Pilot <onboarding@resend.dev>",
+      from: "ProjectFlow <onboarding@resend.dev>",
       to: validatedEmail,
       subject: "Reset your password",
       html: emailHtml,
