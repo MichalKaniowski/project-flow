@@ -13,7 +13,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { LuPin } from "react-icons/lu";
 import { toast } from "sonner";
 import { pinProject } from "../actions/pin-project";
-import { ProjectDeleteDialogContent } from "./project-delete-dialog";
+import { ProjectDeleteDialogContent } from "./project-delete-dialog-content";
 
 interface ProjectCardOptionsProps {
   project: Project;
