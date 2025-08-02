@@ -8,7 +8,6 @@ import {
   FormMessage,
 } from "@/components/ui/primitives/form";
 import { Input } from "@/components/ui/primitives/input";
-import { doesAccountExist } from "@/features/auth/actions/does-account-exist";
 import { sendResetPasswordEmail } from "@/features/auth/actions/send-reset-password-email";
 import {
   forgotPasswordSchema,
@@ -38,11 +37,6 @@ export const ForgotPasswordForm = ({
   const onSubmit = async (values: ForgotPasswordValues) => {
     try {
       setIsLoading(true);
-
-      const doesAccountWithEmailExist = await doesAccountExist(values.email);
-      if (!doesAccountWithEmailExist)
-        return toast.error("Account with that email address doesn't exist.");
-
       const res = await sendResetPasswordEmail(values);
 
       const error = res?.error;

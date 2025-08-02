@@ -28,7 +28,6 @@ export const ResetPasswordForm = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -54,11 +53,11 @@ export const ResetPasswordForm = () => {
       }
 
       toast.success("Password reset successfully. Redirecting to login...", {
-        duration: 5000,
+        duration: 3000,
       });
       setTimeout(() => {
         router.push("/login");
-      }, 5000);
+      }, 3000);
     } finally {
       setIsLoading(false);
     }

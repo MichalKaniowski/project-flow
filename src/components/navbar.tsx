@@ -12,6 +12,23 @@ import { FolderKanban } from "lucide-react";
 import Link from "next/link";
 import { LuChevronsUpDown } from "react-icons/lu";
 
+const UserMenu = () => {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button>
+          <UserAvatar />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuItem onClick={logout} className="cursor-pointer">
+          Logout
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+
 export const Navbar = () => {
   return (
     <header>
@@ -30,18 +47,7 @@ export const Navbar = () => {
         <div className="flex items-center gap-3">
           <NotificationsButton />
           <ThemeToggle />
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button>
-                <UserAvatar />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem onClick={logout} className="cursor-pointer">
-                Logout
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <UserMenu />
         </div>
       </nav>
     </header>

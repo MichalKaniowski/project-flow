@@ -27,7 +27,6 @@ export function AddProjectForm() {
       targetUser: "",
     },
   });
-
   const router = useRouter();
 
   const onSubmit = async (values: CreateProjectValues) => {

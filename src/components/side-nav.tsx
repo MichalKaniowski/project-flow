@@ -55,7 +55,7 @@ export const SideNav = () => {
       }
       return JSON.parse(saved);
     }
-    return true; // default state if window is not defined
+    return true;
   });
 
   useEffect(() => {
