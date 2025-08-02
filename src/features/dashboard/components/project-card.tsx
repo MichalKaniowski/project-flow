@@ -77,7 +77,9 @@ export const ProjectCard = ({
             alt="project-icon"
             className="rounded-md"
           />
-          <h2>{project.name}</h2>
+          <Link href={`/projects/${project.id}`}>
+            <h2>{project.name}</h2>
+          </Link>
         </div>
 
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
