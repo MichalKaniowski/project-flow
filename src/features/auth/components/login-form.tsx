@@ -9,6 +9,7 @@ import { login } from "@/features/auth/actions/login";
 import { loginSchema, type LoginValues } from "@/features/auth/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EyeIcon, EyeOffIcon, FolderIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { SocialSection } from "./social-section";
@@ -25,6 +26,7 @@ export const LoginForm = ({
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const router = useRouter();
 
   const form = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
@@ -37,9 +39,13 @@ export const LoginForm = ({
   const onSubmit = async (values: LoginValues) => {
     setIsLoading(true);
     setError("");
-    const { error } = await login(values);
+    const data = await login(values);
+    if (data?.error) {
+      setError(data.error);
+    } else {
+      await router.push("/projects");
+    }
     setIsLoading(false);
-    if (error) setError(error);
   };
 
   return (
@@ -126,6 +132,9 @@ export const LoginForm = ({
                 type="submit"
                 className="w-full"
                 loading={isLoading}
+                disabled={
+                  form.formState.isSubmitting || !form.formState.isValid
+                }
               >
                 {isLoading ? "Signing in..." : "Sign in"}
               </LoadingButton>

@@ -9,6 +9,7 @@ import { signup } from "@/features/auth/actions/signup";
 import { signUpSchema, SignUpValues } from "@/features/auth/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EyeIcon, EyeOffIcon, FolderIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { SocialSection } from "./social-section";
@@ -21,6 +22,7 @@ export const SignupForm = ({ toggleSignupMode }: SignupFormProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const router = useRouter();
 
   const form = useForm<SignUpValues>({
     resolver: zodResolver(signUpSchema),
@@ -34,9 +36,13 @@ export const SignupForm = ({ toggleSignupMode }: SignupFormProps) => {
   const onSubmit = async (values: SignUpValues) => {
     setIsLoading(true);
     setError("");
-    const { error } = await signup(values);
+    const data = await signup(values);
+    if (data?.error) {
+      setError(data.error);
+    } else {
+      await router.push("/projects");
+    }
     setIsLoading(false);
-    if (error) setError(error);
   };
 
   return (
@@ -128,6 +134,9 @@ export const SignupForm = ({ toggleSignupMode }: SignupFormProps) => {
                 type="submit"
                 className="!mt-6 w-full"
                 loading={isLoading}
+                disabled={
+                  form.formState.isSubmitting || !form.formState.isValid
+                }
               >
                 {isLoading ? "Signing up..." : "Sign up"}
               </LoadingButton>

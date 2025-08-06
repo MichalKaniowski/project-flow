@@ -4,12 +4,9 @@ import { lucia } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { verify } from "@node-rs/argon2";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import { LoginValues, loginSchema } from "../validation";
 
-export const login = async (
-  credentials: LoginValues
-): Promise<{ error: string }> => {
+export const login = async (credentials: LoginValues) => {
   try {
     const { email, password } = loginSchema.parse(credentials);
     const existingUser = await prisma.user.findFirst({
@@ -57,6 +54,4 @@ export const login = async (
       error: "Something went wrong. Please try again.",
     };
   }
-
-  return redirect("/projects");
 };
