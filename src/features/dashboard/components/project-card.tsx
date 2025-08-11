@@ -24,7 +24,7 @@ export const ProjectCard = ({
             alt="project-icon"
             className="rounded-md"
           />
-          <Link href={`/projects/${project.id}`}>
+          <Link href={`/projects/${project.id}/tasks`}>
             <h2>{project.name}</h2>
           </Link>
         </div>

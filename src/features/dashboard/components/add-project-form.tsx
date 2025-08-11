@@ -37,7 +37,7 @@ export function AddProjectForm() {
     }
 
     toast.success("Project added successfully");
-    router.push(`/projects/${data.createdProject.id}`);
+    router.push(`/projects/${data.createdProject.id}/tasks`);
   };
 
   return (

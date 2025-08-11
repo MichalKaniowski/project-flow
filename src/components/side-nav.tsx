@@ -15,30 +15,33 @@ import { Fragment, ReactNode, useEffect, useState } from "react";
 export const NavItems = () => {
   const pathname = usePathname();
 
-  function isNavItemActive(pathname: string, nav: string) {
-    return pathname.includes(nav);
+  const segments = pathname.split("/").filter(Boolean);
+  if (segments.length > 1) {
+    segments.pop();
   }
+
+  const basePath = `/${segments.join("/")}`;
 
   return [
     {
       name: "Home",
-      href: "/",
+      href: `${basePath}/tasks`,
       icon: <Home size={20} />,
-      active: pathname === "/",
+      active: pathname === `${basePath}/tasks`,
       position: "top",
     },
     {
       name: "Plan",
-      href: "/plan",
+      href: `${basePath}/plan`,
       icon: <Book size={20} />,
-      active: isNavItemActive(pathname, "/plan"),
+      active: pathname === `${basePath}/plan`,
       position: "top",
     },
     {
       name: "Project Settings",
-      href: "/project-settings",
+      href: `${basePath}/project-settings`,
       icon: <Settings size={20} />,
-      active: isNavItemActive(pathname, "/project-settings"),
+      active: pathname === `${basePath}/project-settings`,
       position: "bottom",
     },
   ];
