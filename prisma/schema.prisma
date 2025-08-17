@@ -58,6 +58,35 @@ model Project {
 
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tasks  Task[]
 
   @@map("projects")
+}
+
+enum Priority {
+  Low
+  Medium
+  High
+}
+
+enum Type {
+  Feature
+  Bug
+  Task
+}
+
+model Task {
+  id          String   @id @default(cuid())
+  title       String
+  assignee    String
+  targetDate  DateTime
+  status      String // it's not an enum because it can change
+  priority    Priority
+  type        Type
+  description String?
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("tasks")
 }
