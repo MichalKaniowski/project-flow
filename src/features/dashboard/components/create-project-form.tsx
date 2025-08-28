@@ -14,7 +14,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-export function AddProjectForm() {
+export function CreateProjectForm() {
   const {
     register,
     handleSubmit,
@@ -36,7 +36,7 @@ export function AddProjectForm() {
       return;
     }
 
-    toast.success("Project added successfully");
+    toast.success("Project created successfully");
     router.push(`/projects/${data.createdProject.id}/tasks`);
   };
 
@@ -89,7 +89,7 @@ export function AddProjectForm() {
 
       <div className="flex justify-end items-center">
         <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Adding..." : "Add Project"}
+          {isSubmitting ? "Creating..." : "Create Project"}
         </Button>
       </div>
     </form>

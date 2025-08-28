@@ -112,7 +112,7 @@ export const ResetPasswordForm = () => {
               className="bg-foreground hover:bg-foreground/90 mt-2 w-full font-bold text-background"
               loading={isLoading}
             >
-              Reset password
+              {isLoading ? "Resetting..." : "Reset password"}
             </LoadingButton>
           </div>
         </form>

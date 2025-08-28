@@ -3,28 +3,37 @@
 import { validateRequest } from "@/auth";
 import { Priority, Type } from "@/generated/prisma";
 import { prisma } from "@/lib/prisma";
-import { getErrorMessage } from "@/lib/utils";
-import { addTaskSchema, AddTaskValues } from "../validation";
+import { taskDataInclude } from "@/types";
+import { createTaskSchema, CreateTaskValues } from "../validation";
 
-export const createTask = async (data: AddTaskValues, projectId: string) => {
-  try {
-    const { user } = await validateRequest();
-    if (!user) return { error: "Unauthorized" };
+type CreateTaskArgs = { data: CreateTaskValues; projectId: string };
 
-    const validatedData = addTaskSchema.parse(data);
-    const task = await prisma.task.create({
-      data: {
-        ...validatedData,
-        status: validatedData.status,
-        type: validatedData.type.replace(" ", "_") as Type,
-        priority: validatedData.priority.replace(" ", "_") as Priority,
+export const createTask = async ({ data, projectId }: CreateTaskArgs) => {
+  const { user } = await validateRequest();
+  if (!user) throw Error("Unauthorized");
+
+  const { status, tagIds, ...validatedData } = createTaskSchema.parse(data);
+  const dbStatus = await prisma.status.findUnique({
+    where: {
+      name_projectId: {
+        name: status,
         projectId,
       },
-    });
+    },
+  });
+  if (!dbStatus) throw Error("Status not found");
 
-    return { task };
-  } catch (error) {
-    console.error(error);
-    return { error: getErrorMessage(error) };
-  }
+  const task = await prisma.task.create({
+    data: {
+      ...validatedData,
+      statusId: dbStatus?.id,
+      type: validatedData.type.replace(" ", "_") as Type,
+      priority: validatedData.priority.replace(" ", "_") as Priority,
+      projectId,
+      tags: { connect: tagIds?.map((id) => ({ id })) || [] },
+    },
+    include: taskDataInclude,
+  });
+
+  return { task };
 };

@@ -1,8 +1,9 @@
 "use client";
 
 import { Input } from "@/components/ui/primitives/input";
-import { AddProjectSheet } from "@/features/dashboard/components/add-project-sheet";
+import { CreateProjectSheet } from "@/features/dashboard/components/create-project-sheet";
 import { ProjectsList } from "@/features/dashboard/components/projects-list";
+import { dashboardQueryKeys } from "@/features/dashboard/dashboard-query-key-factory";
 import { Project } from "@/generated/prisma";
 import { useDebounce } from "@/hooks/use-debounce";
 import { kyInstance } from "@/lib/ky";
@@ -16,7 +17,7 @@ export default function ProjectsPage() {
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["projects"],
+    queryKey: dashboardQueryKeys.projectsList,
     queryFn: () => kyInstance.get("/api/projects").json<Project[]>(),
   });
   const [projectNameSearch, setProjectNameSearch] = useState("");
@@ -48,7 +49,7 @@ export default function ProjectsPage() {
             value={projectNameSearch}
             onChange={(e) => setProjectNameSearch(e.target.value)}
           />
-          <AddProjectSheet />
+          <CreateProjectSheet />
         </div>
         <div className="space-y-3">
           {!!pinnedProjects?.length && (

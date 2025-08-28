@@ -6,20 +6,20 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/primitives/sheet";
-import { AddProjectForm } from "../../../features/dashboard/components/add-project-form";
+import { CreateProjectForm } from "./create-project-form";
 
-export const AddProjectSheet = () => {
+export const CreateProjectSheet = () => {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button size="sm">Add Project</Button>
+        <Button size="sm">Create Project</Button>
       </SheetTrigger>
       <SheetContent className="space-y-6">
         <SheetHeader className="mb-4">
-          <SheetTitle>Add Project</SheetTitle>
+          <SheetTitle>Create Project</SheetTitle>
         </SheetHeader>
 
-        <AddProjectForm />
+        <CreateProjectForm />
       </SheetContent>
     </Sheet>
   );

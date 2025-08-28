@@ -88,7 +88,7 @@ export const ForgotPasswordForm = ({
             className="bg-foreground hover:bg-foreground/90 mt-4 w-full font-bold text-background"
             loading={isLoading}
           >
-            Reset password
+            {isLoading ? "Resetting..." : "Reset password"}
           </LoadingButton>
         </form>
       </Form>

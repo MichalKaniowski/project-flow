@@ -56,11 +56,38 @@ model Project {
   updatedAt  DateTime @updatedAt
   createdAt  DateTime @default(now())
 
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  tasks  Task[]
+  userId   String
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tasks    Task[]
+  statuses Status[]
+  tags     Tag[]
 
   @@map("projects")
+}
+
+model Status {
+  id   String @id @default(cuid())
+  name String
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  tasks     Task[]
+
+  @@unique([name, projectId])
+  @@map("statuses")
+}
+
+model Tag {
+  id      String @id @default(cuid())
+  name    String
+  styleId String
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  tasks     Task[]
+
+  @@unique([name, projectId])
+  @@map("tags")
 }
 
 enum Priority {
@@ -80,13 +107,15 @@ model Task {
   title       String
   assignee    String
   targetDate  DateTime
-  status      String // it's not an enum because it can change
   priority    Priority
   type        Type
   description String?
 
+  statusId  String
+  status    Status  @relation(fields: [statusId], references: [id], onDelete: Cascade)
   projectId String
   project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  tags      Tag[]
 
   @@map("tasks")
 }

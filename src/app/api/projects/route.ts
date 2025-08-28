@@ -1,5 +1,6 @@
 import { validateRequest } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { projectDataInclude } from "@/types";
 
 export const GET = async () => {
   try {
@@ -9,6 +10,7 @@ export const GET = async () => {
 
     const projects = await prisma.project.findMany({
       where: { userId: user.id },
+      include: projectDataInclude,
     });
 
     return Response.json(projects);

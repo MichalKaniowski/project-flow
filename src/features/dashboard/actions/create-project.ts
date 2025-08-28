@@ -16,6 +16,14 @@ export const createProject = async (values: CreateProjectValues) => {
         userId: user.id,
       },
     });
+    await prisma.status.createMany({
+      data: [
+        { name: "Backlog", projectId: createdProject.id },
+        { name: "To Do", projectId: createdProject.id },
+        { name: "In Progress", projectId: createdProject.id },
+        { name: "Done", projectId: createdProject.id },
+      ],
+    });
 
     return { createdProject };
   } catch (error) {

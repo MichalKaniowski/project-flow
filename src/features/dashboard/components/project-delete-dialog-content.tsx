@@ -67,7 +67,7 @@ export const ProjectDeleteDialogContent = ({
             disabled={deleteProjectInputText !== "Delete project"}
             type="submit"
           >
-            Delete
+            {isDeletingProject ? "Deleting..." : "Delete"}
           </LoadingButton>
         </div>
       </form>

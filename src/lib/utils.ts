@@ -6,7 +6,7 @@ export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
 };
 
-export function getErrorMessage(error: unknown): string {
+export const getErrorMessage = (error: unknown): string => {
   if (error === undefined || error === null) {
     return "An unknown error occurred";
   }
@@ -31,4 +31,21 @@ export function getErrorMessage(error: unknown): string {
   }
 
   return "Something went wrong";
-}
+};
+
+// current year - "aug 21", other year - "aug 21, 2030"
+export const formatDate = (date: Date) => {
+  const now = new Date();
+  const isCurrentYear = date.getFullYear() === now.getFullYear();
+
+  const options: Intl.DateTimeFormatOptions = {
+    month: "short",
+    day: "numeric",
+  };
+
+  if (!isCurrentYear) {
+    options.year = "numeric";
+  }
+
+  return date.toLocaleDateString("en-US", options);
+};
