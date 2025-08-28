@@ -13,7 +13,7 @@ export const GET = async () => {
       include: projectDataInclude,
     });
 
-    return Response.json(projects);
+    return Response.json({ projects });
   } catch (error) {
     console.error("here: ", error);
     return Response.json({ error: "Internal Server Error" }, { status: 500 });

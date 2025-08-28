@@ -1,6 +1,5 @@
 import { validateRequest } from "@/auth";
 import { Navbar } from "@/components/navbar";
-import { ReactQueryProvider } from "@/components/providers/react-query-provider";
 import { SessionProvider } from "@/components/providers/session-provider";
 import { redirect } from "next/navigation";
 import type React from "react";
@@ -18,14 +17,12 @@ export default async function MainLayout({
   if (!session.user) redirect("/login");
 
   return (
-    <ReactQueryProvider>
-      <SessionProvider value={session}>
-        <div className="relative flex flex-col w-screen h-screen">
-          <Navbar />
+    <SessionProvider value={session}>
+      <div className="relative flex flex-col w-screen h-screen">
+        <Navbar />
 
-          {children}
-        </div>
-      </SessionProvider>
-    </ReactQueryProvider>
+        {children}
+      </div>
+    </SessionProvider>
   );
 }

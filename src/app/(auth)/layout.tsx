@@ -7,7 +7,6 @@ export default async function AuthLayout({
   children: React.ReactNode;
 }) {
   const { user } = await validateRequest();
-
   if (user) redirect("/projects");
 
   return <div className="min-h-screen">{children}</div>;

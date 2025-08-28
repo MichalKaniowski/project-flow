@@ -12,24 +12,21 @@ import { Loader2 } from "lucide-react";
 import { useMemo, useState } from "react";
 
 export default function ProjectsPage() {
-  const {
-    data: projects,
-    isLoading,
-    refetch,
-  } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: dashboardQueryKeys.projectsList,
-    queryFn: () => kyInstance.get("/api/projects").json<Project[]>(),
+    queryFn: () =>
+      kyInstance.get("/api/projects").json<{ projects: Project[] }>(),
   });
   const [projectNameSearch, setProjectNameSearch] = useState("");
   const projectNameSearchDeferred = useDebounce(projectNameSearch, 500);
 
   const searchProjects = useMemo(() => {
-    return projects?.filter((project) =>
+    return data?.projects?.filter((project) =>
       project.name
         .toLowerCase()
         .includes(projectNameSearchDeferred.trim().toLowerCase())
     );
-  }, [projects, projectNameSearchDeferred]);
+  }, [projectNameSearchDeferred, data?.projects]);
 
   const { pinnedProjects, unpinnedProjects } = useMemo(
     () => ({
@@ -53,18 +50,10 @@ export default function ProjectsPage() {
         </div>
         <div className="space-y-3">
           {!!pinnedProjects?.length && (
-            <ProjectsList
-              projects={pinnedProjects}
-              listName="Pinned"
-              refetch={refetch}
-            />
+            <ProjectsList projects={pinnedProjects} listName="Pinned" />
           )}
           {!!unpinnedProjects?.length && (
-            <ProjectsList
-              projects={unpinnedProjects}
-              listName="Other"
-              refetch={refetch}
-            />
+            <ProjectsList projects={unpinnedProjects} listName="Other" />
           )}
           {!pinnedProjects?.length &&
             !unpinnedProjects?.length &&

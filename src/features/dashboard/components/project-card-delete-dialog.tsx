@@ -11,37 +11,25 @@ import Link from "next/link";
 import { useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { LuPin } from "react-icons/lu";
-import { toast } from "sonner";
-import { pinProject } from "../actions/pin-project";
+import { usePinProject } from "../hooks/use-pin-project";
 import { ProjectDeleteDialogContent } from "./project-delete-dialog-content";
 
 interface ProjectCardOptionsProps {
   project: Project;
-  refetch: () => void;
 }
 
-export const ProjectCardOptions = ({
-  project,
-  refetch,
-}: ProjectCardOptionsProps) => {
+export const ProjectCardOptions = ({ project }: ProjectCardOptionsProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [isPinningProject, setIsPinningProject] = useState(false);
   const [isDropdownMenuOpen, setIsDropdownMenuOpen] = useState(false);
 
+  const { mutate: pinProjectMutate, isPending: isPinningProjectPending } =
+    usePinProject({
+      projectId: project.id,
+      onSettled: () => setIsDropdownMenuOpen(false),
+    });
+
   const handlePinProject = async () => {
-    setIsPinningProject(true);
-    const data = await pinProject(project.id);
-    setIsPinningProject(false);
-
-    refetch();
-
-    if (data?.error) {
-      toast.error(data.error);
-    }
-    toast.success(
-      `Project ${project.pinned ? "unpinned" : "pinned"} successfully`
-    );
-    setIsDropdownMenuOpen(false);
+    pinProjectMutate();
   };
 
   return (
@@ -65,7 +53,7 @@ export const ProjectCardOptions = ({
               <LuPin size={14} />
               {project.pinned ? "Unpin" : "Pin"}
             </div>
-            {isPinningProject && <Loader2 className="animate-spin" />}
+            {isPinningProjectPending && <Loader2 className="animate-spin" />}
           </DropdownMenuItem>
 
           <DropdownMenuItem
@@ -93,7 +81,6 @@ export const ProjectCardOptions = ({
       <ProjectDeleteDialogContent
         projectId={project.id}
         onDialogClose={() => setIsDialogOpen(false)}
-        refetch={refetch}
       />
     </Dialog>
   );

@@ -6,13 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ProjectCardOptions } from "./project-card-delete-dialog";
 
-export const ProjectCard = ({
-  project,
-  refetch,
-}: {
-  project: Project;
-  refetch: () => void;
-}) => {
+export const ProjectCard = ({ project }: { project: Project }) => {
   return (
     <Card className="relative">
       <CardHeader className="flex flex-row justify-between items-center">
@@ -29,7 +23,7 @@ export const ProjectCard = ({
           </Link>
         </div>
 
-        <ProjectCardOptions project={project} refetch={refetch} />
+        <ProjectCardOptions project={project} />
       </CardHeader>
 
       <CardContent className="space-y-2 text-sm">

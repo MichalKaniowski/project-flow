@@ -8,33 +8,21 @@ import {
 } from "@/components/ui/primitives/dialog";
 import { Input } from "@/components/ui/primitives/input";
 import { useState } from "react";
-import { toast } from "sonner";
-import { deleteProject } from "../actions/delete-project";
+import { useProjectDelete } from "../hooks/use-project-delete";
 
 export const ProjectDeleteDialogContent = ({
   projectId,
   onDialogClose,
-  refetch,
 }: {
   projectId: string;
   onDialogClose: () => void;
-  refetch: () => void;
 }) => {
   const [deleteProjectInputText, setDeleteProjectInputText] = useState("");
-  const [isDeletingProject, setIsDeletingProject] = useState(false);
+  const { mutate: deleteProjectMutate, isPending: isDeletingProjectPending } =
+    useProjectDelete({ projectId, onDialogClose });
 
   const handleDeleteProject = async () => {
-    setIsDeletingProject(true);
-    const data = await deleteProject(projectId);
-    setIsDeletingProject(false);
-
-    refetch();
-
-    if (data?.error) {
-      toast.error(data.error);
-    }
-    toast.success("Project deleted successfully");
-    onDialogClose();
+    await deleteProjectMutate();
   };
   return (
     <DialogContent>
@@ -62,12 +50,12 @@ export const ProjectDeleteDialogContent = ({
             <Button>Cancel</Button>
           </DialogClose>
           <LoadingButton
-            loading={isDeletingProject}
+            loading={isDeletingProjectPending}
             variant="destructive"
             disabled={deleteProjectInputText !== "Delete project"}
             type="submit"
           >
-            {isDeletingProject ? "Deleting..." : "Delete"}
+            {isDeletingProjectPending ? "Deleting..." : "Delete"}
           </LoadingButton>
         </div>
       </form>

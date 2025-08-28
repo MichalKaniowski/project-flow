@@ -5,13 +5,12 @@ import { Button } from "@/components/ui/primitives/button";
 import { Card, CardContent } from "@/components/ui/primitives/card";
 import { Input } from "@/components/ui/primitives/input";
 import { Label } from "@/components/ui/primitives/label";
-import { login } from "@/features/auth/actions/login";
 import { loginSchema, type LoginValues } from "@/features/auth/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EyeIcon, EyeOffIcon, FolderIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useLogin } from "../hooks/use-login";
 import { SocialSection } from "./social-section";
 
 interface LoginFormProps {
@@ -24,9 +23,11 @@ export const LoginForm = ({
   onTurnForgotPasswordModeOn,
 }: LoginFormProps) => {
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
-  const router = useRouter();
+  const {
+    mutate: loginMutate,
+    isPending: isLoginPending,
+    error: loginError,
+  } = useLogin();
 
   const form = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
@@ -37,15 +38,7 @@ export const LoginForm = ({
   });
 
   const onSubmit = async (values: LoginValues) => {
-    setIsLoading(true);
-    setError("");
-    const data = await login(values);
-    if (data?.error) {
-      setError(data.error);
-    } else {
-      await router.push("/projects");
-    }
-    setIsLoading(false);
+    loginMutate(values);
   };
 
   return (
@@ -67,8 +60,10 @@ export const LoginForm = ({
         {/* Login Card */}
         <Card className="shadow-lg mx-auto w-[95%] max-w-[400px]">
           <CardContent className="space-y-4 mt-7">
-            {error && (
-              <p className="text-destructive text-sm text-center">{error}</p>
+            {loginError && (
+              <p className="text-destructive text-sm text-center">
+                {loginError.message}
+              </p>
             )}
 
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -131,12 +126,12 @@ export const LoginForm = ({
               <LoadingButton
                 type="submit"
                 className="w-full"
-                loading={isLoading}
+                loading={isLoginPending}
                 disabled={
                   form.formState.isSubmitting || !form.formState.isValid
                 }
               >
-                {isLoading ? "Signing in..." : "Sign in"}
+                {isLoginPending ? "Signing in..." : "Sign in"}
               </LoadingButton>
             </form>
 

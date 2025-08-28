@@ -5,13 +5,12 @@ import { Button } from "@/components/ui/primitives/button";
 import { Card, CardContent } from "@/components/ui/primitives/card";
 import { Input } from "@/components/ui/primitives/input";
 import { Label } from "@/components/ui/primitives/label";
-import { signup } from "@/features/auth/actions/signup";
 import { signUpSchema, SignUpValues } from "@/features/auth/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EyeIcon, EyeOffIcon, FolderIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useSignup } from "../hooks/use-signup";
 import { SocialSection } from "./social-section";
 
 interface SignupFormProps {
@@ -20,9 +19,12 @@ interface SignupFormProps {
 
 export const SignupForm = ({ toggleSignupMode }: SignupFormProps) => {
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
-  const router = useRouter();
+
+  const {
+    mutate: signupMutate,
+    isPending: isSignupPending,
+    error: signupError,
+  } = useSignup();
 
   const form = useForm<SignUpValues>({
     resolver: zodResolver(signUpSchema),
@@ -34,15 +36,7 @@ export const SignupForm = ({ toggleSignupMode }: SignupFormProps) => {
   });
 
   const onSubmit = async (values: SignUpValues) => {
-    setIsLoading(true);
-    setError("");
-    const data = await signup(values);
-    if (data?.error) {
-      setError(data.error);
-    } else {
-      await router.push("/projects");
-    }
-    setIsLoading(false);
+    signupMutate(values);
   };
 
   return (
@@ -64,8 +58,10 @@ export const SignupForm = ({ toggleSignupMode }: SignupFormProps) => {
         {/* Signup Card */}
         <Card className="shadow-lg mx-auto w-[95%] max-w-[400px]">
           <CardContent className="space-y-4 mt-7">
-            {error && (
-              <p className="text-destructive text-sm text-center">{error}</p>
+            {signupError && (
+              <p className="text-destructive text-sm text-center">
+                {signupError.message}
+              </p>
             )}
 
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -133,12 +129,12 @@ export const SignupForm = ({ toggleSignupMode }: SignupFormProps) => {
               <LoadingButton
                 type="submit"
                 className="!mt-6 w-full"
-                loading={isLoading}
+                loading={isSignupPending}
                 disabled={
                   form.formState.isSubmitting || !form.formState.isValid
                 }
               >
-                {isLoading ? "Signing up..." : "Sign up"}
+                {isSignupPending ? "Signing up..." : "Sign up"}
               </LoadingButton>
             </form>
 
