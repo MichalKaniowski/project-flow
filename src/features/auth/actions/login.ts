@@ -4,6 +4,7 @@ import { lucia } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { verify } from "@node-rs/argon2";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { LoginValues, loginSchema } from "../validation";
 
 export const login = async (credentials: LoginValues) => {
@@ -48,6 +49,7 @@ export const login = async (credentials: LoginValues) => {
       sessionCookie.value,
       sessionCookie.attributes
     );
+    redirect("/projects");
   } catch (error) {
     console.error(error);
     return {

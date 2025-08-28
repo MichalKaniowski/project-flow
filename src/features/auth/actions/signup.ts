@@ -4,6 +4,7 @@ import { lucia } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { generateIdFromEntropySize } from "lucia";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { signUpSchema, SignUpValues } from "../validation";
 import { getHashedPassword } from "./get-hashed-password";
 
@@ -44,6 +45,7 @@ export const signup = async (credentials: SignUpValues) => {
       sessionCookie.value,
       sessionCookie.attributes
     );
+    redirect("/projects");
   } catch (error) {
     console.error(error);
     return {
