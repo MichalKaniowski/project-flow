@@ -1,6 +1,6 @@
 import { validateRequest } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { getErrorMessage } from "@/lib/utils";
+import { getColumnsWithTasks, getErrorMessage } from "@/lib/utils";
 import { taskDataInclude } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -17,6 +17,11 @@ export const GET = async (
       throw new Error("Project ID is required");
     }
 
+    const projectStatuses = await prisma.status.findMany({
+      where: {
+        projectId,
+      },
+    });
     const tasks = await prisma.task.findMany({
       where: {
         projectId,
@@ -24,7 +29,9 @@ export const GET = async (
       include: taskDataInclude,
     });
 
-    return NextResponse.json({ tasks });
+    return NextResponse.json({
+      columnsWithTasks: getColumnsWithTasks(tasks, projectStatuses),
+    });
   } catch (err) {
     return NextResponse.json({ error: getErrorMessage(err) });
   }

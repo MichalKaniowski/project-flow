@@ -17,7 +17,7 @@ import {
 import { TaskTag } from "@/features/tasks/components/task-tag";
 import { taskQueryKeys } from "@/features/tasks/task-query-key-factory";
 import { kyInstance } from "@/lib/ky";
-import { formatDate } from "@/lib/utils";
+import { formatDate, getColumnsWithTasks } from "@/lib/utils";
 import { ProjectData, TaskData } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -47,31 +47,23 @@ export function KanbanBoard({
   project: ProjectData;
 }) {
   // this query will be never called, it's for state managment only
-  const { data: tasksData } = useQuery({
-    queryKey: taskQueryKeys.getTasks(projectId),
+  const {
+    data: { columnsWithTasks },
+  } = useQuery({
+    queryKey: taskQueryKeys.getColumns(projectId),
     queryFn: () =>
-      kyInstance
-        .get(`/api/projects/${projectId}/tasks`)
-        .json<{ tasks: TaskData[] }>(),
-    initialData: { tasks: initialTasks },
+      kyInstance.get(`/api/projects/${projectId}/columns-with-tasks`).json<{
+        columnsWithTasks: { id: string; name: string; tasks: TaskData[] }[];
+      }>(),
+    initialData: {
+      columnsWithTasks: getColumnsWithTasks(initialTasks, projectStatuses),
+    },
     staleTime: Infinity,
-  });
-
-  const columns = projectStatuses.map((status) => {
-    const columnTasks = tasksData.tasks.filter(
-      (task) => task.statusId === status.id
-    );
-
-    return {
-      id: status.id,
-      name: status.name,
-      tasks: columnTasks,
-    };
   });
 
   return (
     <div className="flex gap-6 w-full h-full overflow-x-scroll scrollbar-hide">
-      {columns.map((column) => {
+      {columnsWithTasks.map((column) => {
         return (
           <div
             key={column.id}
@@ -93,62 +85,64 @@ export function KanbanBoard({
 
             <div className="flex flex-col flex-1 gap-3 overflow-y-auto scrollbar-hide">
               {column.tasks.map((task) => (
-                <Card
-                  key={task.id}
-                  className="hover:shadow-md transition-shadow"
-                >
-                  <CardHeader className="pb-3">
-                    <div className="flex justify-between items-start">
-                      <CardTitle className="font-medium text-sm leading-tight">
-                        {task.title}
-                      </CardTitle>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="p-0 w-6 h-6"
-                          >
-                            <MoreHorizontal className="w-3 h-3" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem>Edit</DropdownMenuItem>
-                          <DropdownMenuItem>Duplicate</DropdownMenuItem>
-                          <DropdownMenuItem className="text-red-600">
-                            Delete
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </div>
-                  </CardHeader>
+                <div key={task.id}>
+                  <Card className="hover:shadow-md transition-shadow">
+                    <CardHeader className="pb-3">
+                      <div className="flex justify-between items-start">
+                        <CardTitle className="font-medium text-sm leading-tight">
+                          {task.title}
+                        </CardTitle>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="p-0 w-6 h-6"
+                            >
+                              <MoreHorizontal className="w-3 h-3" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem>Edit</DropdownMenuItem>
+                            <DropdownMenuItem>Duplicate</DropdownMenuItem>
+                            <DropdownMenuItem className="text-red-600">
+                              Delete
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
+                    </CardHeader>
 
-                  <CardContent className="pt-0">
-                    <p className="mb-3 text-gray-500 dark:text-gray-400 text-xs line-clamp-2">
-                      {task.description}
-                    </p>
-                    <div className="flex flex-wrap gap-1 mb-3">
-                      {task.tags?.map((tag) => (
-                        <TaskTag key={tag.id} tag={tag} isHighlighted={true} />
-                      ))}
-                    </div>
+                    <CardContent className="pt-0">
+                      <p className="mb-3 text-gray-500 dark:text-gray-400 text-xs line-clamp-2">
+                        {task.description}
+                      </p>
+                      <div className="flex flex-wrap gap-1 mb-3">
+                        {task.tags?.map((tag) => (
+                          <TaskTag
+                            key={tag.id}
+                            tag={tag}
+                            isHighlighted={true}
+                          />
+                        ))}
+                      </div>
 
-                    <div className="mb-3">
-                      <Badge
-                        className={`text-xs ${getPriorityColor(task.priority)}`}
-                      >
-                        {task.priority}
-                      </Badge>
-                    </div>
+                      <div className="mb-3">
+                        <Badge
+                          className={`text-xs ${getPriorityColor(task.priority)}`}
+                        >
+                          {task.priority}
+                        </Badge>
+                      </div>
 
-                    <div className="flex justify-between items-center">
-                      <div className="flex items-center gap-3 text-gray-500 dark:text-gray-400 text-xs">
-                        <div className="flex items-center gap-1">
-                          <Calendar className="w-3 h-3" />
-                          <span>{formatDate(task.targetDate)}</span>
-                        </div>
-                        {/* features to be added */}
-                        {/* {task.comments > 0 && (
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center gap-3 text-gray-500 dark:text-gray-400 text-xs">
+                          <div className="flex items-center gap-1">
+                            <Calendar className="w-3 h-3" />
+                            <span>{formatDate(task.targetDate)}</span>
+                          </div>
+                          {/* features to be added */}
+                          {/* {task.comments > 0 && (
                         <div className="flex items-center gap-1">
                           <MessageSquare className="w-3 h-3" />
                           <span>{task.comments}</span>
@@ -160,26 +154,27 @@ export function KanbanBoard({
                           <span>{task.attachments}</span>
                         </div>
                       )} */}
-                        <div className="flex items-center gap-1">
-                          <MessageSquare className="w-3 h-3" />
-                          <span>5</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Paperclip className="w-3 h-3" />
-                          <span>2</span>
-                        </div>
-                      </div>
+                          <div className="flex items-center gap-1">
+                            <MessageSquare className="w-3 h-3" />
+                            <span>5</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Paperclip className="w-3 h-3" />
+                            <span>2</span>
 
-                      {/* assignee to be added */}
-                      {/* <Avatar className="w-6 h-6">
+                            {/* assignee to be added */}
+                            {/* <Avatar className="w-6 h-6">
                       <AvatarImage src="/placeholder.svg?height=24&width=24" />
                       <AvatarFallback className="text-xs">
                         {task.assignee.avatar}
                       </AvatarFallback>
                     </Avatar> */}
-                    </div>
-                  </CardContent>
-                </Card>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
               ))}
             </div>
           </div>

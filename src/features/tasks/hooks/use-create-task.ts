@@ -6,11 +6,11 @@ import { taskQueryKeys } from "../task-query-key-factory";
 
 export const useCreateTask = ({ projectId }: { projectId: string }) => {
   const queryClient = useQueryClient();
-  const queryKey = taskQueryKeys.getTasks(projectId);
+  const queryKey = taskQueryKeys.getColumns(projectId);
 
   return useMutation({
     mutationFn: createTask,
-    onSuccess: async (data) => {
+    onSuccess: async (task) => {
       await queryClient.cancelQueries({ queryKey });
 
       const previousState = queryClient.getQueryData<{ tasks: Task[] }>(
@@ -18,10 +18,10 @@ export const useCreateTask = ({ projectId }: { projectId: string }) => {
       );
 
       queryClient.setQueryData<{ tasks: Task[] }>(queryKey, (prev) => {
-        if (!prev) return { tasks: [data.task] };
+        if (!prev) return { tasks: [task] };
 
         return {
-          tasks: [...prev.tasks, data.task],
+          tasks: [...prev.tasks, task],
         };
       });
 
@@ -29,7 +29,8 @@ export const useCreateTask = ({ projectId }: { projectId: string }) => {
 
       return { previousState };
     },
-    onError: () => {
+    onError: (error) => {
+      console.error(error);
       toast.error("Failed to create task");
     },
   });

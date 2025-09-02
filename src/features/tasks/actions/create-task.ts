@@ -35,5 +35,5 @@ export const createTask = async ({ data, projectId }: CreateTaskArgs) => {
     include: taskDataInclude,
   });
 
-  return { task };
+  return task;
 };

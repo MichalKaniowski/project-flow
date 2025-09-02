@@ -1,3 +1,5 @@
+import { Status } from "@/generated/prisma";
+import { TaskData } from "@/types";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { ZodError } from "zod";
@@ -48,4 +50,16 @@ export const formatDate = (date: Date) => {
   }
 
   return date.toLocaleDateString("en-US", options);
+};
+
+export const getColumnsWithTasks = (tasks: TaskData[], statuses: Status[]) => {
+  return statuses.map((status) => {
+    const columnTasks = tasks.filter((task) => task.statusId === status.id);
+
+    return {
+      id: status.id,
+      name: status.name,
+      tasks: columnTasks,
+    };
+  });
 };
