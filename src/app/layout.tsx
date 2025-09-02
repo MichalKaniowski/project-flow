@@ -31,7 +31,11 @@ export default function RootLayout({
           >
             {children}
             <Toaster />
-            <NextTopLoader color="hsl(var(--foreground))" height={3} />
+            <NextTopLoader
+              color="hsl(var(--foreground))"
+              height={3}
+              showSpinner={false}
+            />
           </ThemeProvider>
         </ReactQueryProvider>
       </body>
