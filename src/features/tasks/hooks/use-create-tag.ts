@@ -1,4 +1,4 @@
-import { Tag } from "@/generated/prisma";
+import { TagsInfo } from "@/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { createTag } from "../actions/create-tag";
@@ -22,8 +22,8 @@ export const useCreateTag = ({
       toast.success(`Tag "${data?.tag?.name || ""}" added successfully`);
 
       await queryClient.cancelQueries({ queryKey });
-      const previousState = queryClient.getQueryData<{ tags: Tag[] }>(queryKey);
-      queryClient.setQueryData<{ tags: Tag[] }>(queryKey, (prev) => {
+      const previousState = queryClient.getQueryData<TagsInfo>(queryKey);
+      queryClient.setQueryData<TagsInfo>(queryKey, (prev) => {
         if (!prev) return { tags: [data.tag] };
         return {
           tags: [...prev.tags, data.tag],

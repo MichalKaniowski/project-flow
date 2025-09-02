@@ -1,4 +1,25 @@
-import { Prisma } from "./generated/prisma";
+import { Prisma, Status, Tag } from "./generated/prisma";
+
+export interface ProjectsListInfo {
+  projects: ProjectData[];
+}
+
+export interface ColumnWithTasks {
+  id: string;
+  name: string;
+  tasks: TaskData[];
+}
+export interface ColumnsWithTasksInfo {
+  columnsWithTasks: ColumnWithTasks[];
+}
+
+export interface TagsInfo {
+  tags: Tag[];
+}
+
+export interface StatusesInfo {
+  statuses: Status[];
+}
 
 export const taskDataInclude = {
   status: true,

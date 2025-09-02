@@ -1,8 +1,8 @@
+import { ColumnsWithTasksInfo } from "@/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { createTask } from "../actions/create-task";
 import { taskQueryKeys } from "../task-query-key-factory";
-import { ColumnWithTasks } from "./../../../components/kanban-board2";
 
 export const useCreateTask = ({ projectId }: { projectId: string }) => {
   const queryClient = useQueryClient();
@@ -13,28 +13,24 @@ export const useCreateTask = ({ projectId }: { projectId: string }) => {
     onSuccess: async (task) => {
       await queryClient.cancelQueries({ queryKey });
 
-      const previousState = queryClient.getQueryData<{
-        columnsWithTasks: ColumnWithTasks[];
-      }>(queryKey);
+      const previousState =
+        queryClient.getQueryData<ColumnsWithTasksInfo>(queryKey);
 
-      queryClient.setQueryData<{ columnsWithTasks: ColumnWithTasks[] }>(
-        queryKey,
-        (prev) => {
-          if (!prev) return { columnsWithTasks: [] };
+      queryClient.setQueryData<ColumnsWithTasksInfo>(queryKey, (prev) => {
+        if (!prev) return { columnsWithTasks: [] };
 
-          return {
-            columnsWithTasks: prev.columnsWithTasks.map((column) => {
-              if (column.id === task.statusId) {
-                return {
-                  ...column,
-                  tasks: [...column.tasks, task],
-                };
-              }
-              return column;
-            }),
-          };
-        }
-      );
+        return {
+          columnsWithTasks: prev.columnsWithTasks.map((column) => {
+            if (column.id === task.statusId) {
+              return {
+                ...column,
+                tasks: [...column.tasks, task],
+              };
+            }
+            return column;
+          }),
+        };
+      });
 
       toast.success("Task created successfully");
 

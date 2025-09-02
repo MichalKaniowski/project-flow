@@ -18,7 +18,7 @@ import { TaskTag } from "@/features/tasks/components/task-tag";
 import { taskQueryKeys } from "@/features/tasks/task-query-key-factory";
 import { kyInstance } from "@/lib/ky";
 import { formatDate, getColumnsWithTasks } from "@/lib/utils";
-import { ProjectData, TaskData } from "@/types";
+import { ColumnsWithTasksInfo, ProjectData } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import {
   Calendar,
@@ -52,9 +52,9 @@ export function KanbanBoard({
   } = useQuery({
     queryKey: taskQueryKeys.getColumns(projectId),
     queryFn: () =>
-      kyInstance.get(`/api/projects/${projectId}/columns-with-tasks`).json<{
-        columnsWithTasks: { id: string; name: string; tasks: TaskData[] }[];
-      }>(),
+      kyInstance
+        .get(`/api/projects/${projectId}/columns-with-tasks`)
+        .json<ColumnsWithTasksInfo>(),
     initialData: {
       columnsWithTasks: getColumnsWithTasks(initialTasks, projectStatuses),
     },

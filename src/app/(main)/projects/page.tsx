@@ -4,9 +4,9 @@ import { Input } from "@/components/ui/primitives/input";
 import { CreateProjectSheet } from "@/features/dashboard/components/create-project-sheet";
 import { ProjectsList } from "@/features/dashboard/components/projects-list";
 import { dashboardQueryKeys } from "@/features/dashboard/dashboard-query-key-factory";
-import { Project } from "@/generated/prisma";
 import { useDebounce } from "@/hooks/use-debounce";
 import { kyInstance } from "@/lib/ky";
+import { ProjectsListInfo } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { useMemo, useState } from "react";
@@ -14,8 +14,7 @@ import { useMemo, useState } from "react";
 export default function ProjectsPage() {
   const { data, isLoading } = useQuery({
     queryKey: dashboardQueryKeys.projectsList,
-    queryFn: () =>
-      kyInstance.get("/api/projects").json<{ projects: Project[] }>(),
+    queryFn: () => kyInstance.get("/api/projects").json<ProjectsListInfo>(),
   });
   const [projectNameSearch, setProjectNameSearch] = useState("");
   const projectNameSearchDeferred = useDebounce(projectNameSearch, 500);

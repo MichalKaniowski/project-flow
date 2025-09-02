@@ -1,5 +1,5 @@
-import { Project } from "@/generated/prisma";
 import { getErrorMessage } from "@/lib/utils";
+import { ProjectsListInfo } from "@/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { deleteProject } from "../actions/delete-project";
@@ -19,7 +19,7 @@ export const useProjectDelete = ({
     mutationFn: () => deleteProject(projectId),
     onSuccess: () => {
       queryClient.cancelQueries({ queryKey });
-      queryClient.setQueryData<{ projects: Project[] }>(queryKey, (oldData) => {
+      queryClient.setQueryData<ProjectsListInfo>(queryKey, (oldData) => {
         if (!oldData) return { projects: [] };
 
         return {

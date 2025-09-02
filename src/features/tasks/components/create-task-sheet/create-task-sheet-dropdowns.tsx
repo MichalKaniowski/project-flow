@@ -12,8 +12,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/primitives/form";
-import { Status } from "@/generated/prisma";
 import { kyInstance } from "@/lib/ky";
+import { StatusesInfo } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { UseFormReturn } from "react-hook-form";
 import { IoIosArrowDown } from "react-icons/io";
@@ -32,7 +32,7 @@ export const CreateTaskSheetDropdowns = ({
     queryFn: () =>
       kyInstance
         .get(`/api/projects/${projectId}/statuses`)
-        .json<{ statuses: Status[] }>(),
+        .json<StatusesInfo>(),
   });
   return (
     <div className="flex items-center gap-2">

@@ -19,9 +19,8 @@ import {
   SheetTrigger,
 } from "@/components/ui/primitives/sheet";
 import { Textarea } from "@/components/ui/primitives/textarea";
-import { Tag } from "@/generated/prisma";
 import { kyInstance } from "@/lib/ky";
-import { ProjectData } from "@/types";
+import { ProjectData, TagsInfo } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
@@ -43,7 +42,7 @@ export const CreateTaskSheet = ({
   const { data: tagsData } = useQuery({
     queryKey: taskQueryKeys.getTags(projectId),
     queryFn: () =>
-      kyInstance.get(`/api/projects/${projectId}/tags`).json<{ tags: Tag[] }>(),
+      kyInstance.get(`/api/projects/${projectId}/tags`).json<TagsInfo>(),
     initialData: { tags: initialTags },
     staleTime: Infinity,
   });
