@@ -1,4 +1,4 @@
-import { ThemeToggle } from "@/components/theme-toggle";
+import { ThemeToggle } from "@/app/(main)/_components/theme-toggle";
 import {
   DropdownMenu,
   DropdownMenuContent,

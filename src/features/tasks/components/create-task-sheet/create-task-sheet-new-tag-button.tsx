@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/primitives/input";
 import { useState } from "react";
 import { TAG_STYLES, TagStyle } from "../../constants";
 import { useCreateTag } from "../../hooks/use-create-tag";
-import { ColorPicker } from "./color-picker";
+import { ColorPicker } from "./create-task-sheet-color-picker";
 
 export const CreateNewTagButton = ({ projectId }: { projectId: string }) => {
   const [newTagName, setNewTagName] = useState("");

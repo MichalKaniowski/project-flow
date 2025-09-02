@@ -1,4 +1,4 @@
-import { SideNav } from "@/components/side-nav";
+import { SideNav } from "./_components/side-nav";
 
 export default async function ProjectLayout({
   children,

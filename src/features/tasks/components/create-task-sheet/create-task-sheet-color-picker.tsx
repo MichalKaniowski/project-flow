@@ -6,7 +6,7 @@ import {
 import { TAG_STYLES, TagStyle } from "@/features/tasks/constants";
 import { PopoverClose } from "@radix-ui/react-popover";
 import { useState } from "react";
-import { TaskTagColor } from "./task-tag-color";
+import { TaskTagColor } from "./create-task-sheet-task-tag-color";
 
 export const ColorPicker = ({
   style,

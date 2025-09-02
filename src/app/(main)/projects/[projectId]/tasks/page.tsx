@@ -1,6 +1,6 @@
 import { validateRequest } from "@/auth";
-import { KanbanBoard } from "@/components/kanban-board";
-import { CreateTaskSheet } from "@/features/tasks/components/create-task-sheet/create-task-sheet";
+import { CreateTaskSheet } from "@/features/tasks/components/create-task-sheet";
+import { KanbanBoard } from "@/features/tasks/components/kanban-board";
 import { prisma } from "@/lib/prisma";
 import { ProjectData, projectDataInclude } from "@/types";
 import Link from "next/link";
@@ -37,6 +37,7 @@ export default async function ProjectTasksPage({
         <CreateTaskSheet project={project} />
       </div>
       <KanbanBoard project={project} />
+      {/* <KanbanBoard2 project={project} /> */}
     </div>
   );
 }

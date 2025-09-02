@@ -29,9 +29,9 @@ import { useCreateTask } from "../../hooks/use-create-task";
 import { taskQueryKeys } from "../../task-query-key-factory";
 import { createTaskSchema, CreateTaskValues } from "../../validation";
 import { TaskTag } from "../task-tag";
-import { CreateNewTagButton } from "./create-new-tag-button";
 import { CreateTaskSheetAssigneeField } from "./create-task-sheet-assigne-field";
 import { CreateTaskSheetDropdowns } from "./create-task-sheet-dropdowns";
+import { CreateNewTagButton } from "./create-task-sheet-new-tag-button";
 
 export const CreateTaskSheet = ({
   project: { id: projectId, tags: initialTags },
