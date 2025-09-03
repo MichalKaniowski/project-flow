@@ -1,9 +1,9 @@
 import { validateRequest } from "@/auth";
-import { Navbar } from "@/components/navbar";
 import { SessionProvider } from "@/components/providers/session-provider";
 import { redirect } from "next/navigation";
 import type React from "react";
 import "../globals.css";
+import { Navbar } from "./_components/navbar";
 
 export default async function MainLayout({
   children,

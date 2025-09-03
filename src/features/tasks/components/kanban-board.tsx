@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/primitives/dropdown-menu";
 import { TaskTag } from "@/features/tasks/components/task-tag";
 import { taskQueryKeys } from "@/features/tasks/task-query-key-factory";
+import { Priority, Type } from "@/generated/prisma";
 import { kyInstance } from "@/lib/ky";
 import { formatDate, getColumnsWithTasks } from "@/lib/utils";
 import { ColumnsWithTasksInfo, ProjectData } from "@/types";
@@ -28,7 +29,7 @@ import {
   Plus,
 } from "lucide-react";
 
-const getPriorityColor = (priority: string) => {
+const getPriorityColor = (priority: Priority) => {
   switch (priority) {
     case "High":
       return "bg-red-100 text-red-800 hover:bg-red-100 dark:bg-red-950/50 dark:text-red-300 dark:hover:bg-red-950/70 dark:border-red-800/50 font-semibold";
@@ -38,6 +39,19 @@ const getPriorityColor = (priority: string) => {
       return "bg-green-100 text-green-800 hover:bg-green-100 dark:bg-emerald-950/50 dark:text-emerald-300 dark:hover:bg-emerald-950/70 dark:border-emerald-800/50 font-semibold";
     default:
       return "bg-gray-100 text-gray-800 hover:bg-gray-100 dark:bg-gray-800/50 dark:text-gray-300 dark:hover:bg-gray-800/70 dark:border-gray-700/50 font-semibold";
+  }
+};
+
+const getTypeColor = (type: Type) => {
+  switch (type) {
+    case "Task":
+      return "bg-purple-100 text-purple-800 hover:bg-purple-100 dark:bg-purple-950/50 dark:text-purple-300 dark:hover:bg-purple-950/70 dark:border-purple-800/50 font-semibold";
+    case "Feature":
+      return "bg-blue-100 text-blue-800 hover:bg-blue-100 dark:bg-blue-950/50 dark:text-blue-300 dark:hover:bg-blue-950/70 dark:border-blue-800/50 font-semibold";
+    case "Bug":
+      return "bg-red-100 text-red-800 hover:bg-red-100 dark:bg-red-950/50 dark:text-red-300 dark:hover:bg-red-950/70 dark:border-red-800/50 font-semibold";
+    default:
+      return "bg-purple-100 text-purple-800 hover:bg-purple-100 dark:bg-purple-950/50 dark:text-purple-300 dark:hover:bg-purple-950/70 dark:border-purple-800/50 font-semibold";
   }
 };
 
@@ -132,6 +146,9 @@ export function KanbanBoard({
                           className={`text-xs ${getPriorityColor(task.priority)}`}
                         >
                           {task.priority}
+                        </Badge>
+                        <Badge className={`text-xs ${getTypeColor(task.type)}`}>
+                          {task.type}
                         </Badge>
                       </div>
 
