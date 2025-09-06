@@ -8,7 +8,7 @@ export const createTaskSchema = z.object({
   priority: z.enum(["Low", "Medium", "High"]),
   type: z.enum(["Feature", "Bug", "Task"]),
   description: z.string().optional(),
-  tagIds: z.array(z.string()).optional(),
+  tagIds: z.array(z.string()).default([]),
 });
 
 export type CreateTaskValues = z.infer<typeof createTaskSchema>;

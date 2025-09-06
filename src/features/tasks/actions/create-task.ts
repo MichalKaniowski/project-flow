@@ -30,7 +30,7 @@ export const createTask = async ({ data, projectId }: CreateTaskArgs) => {
       type: validatedData.type.replace(" ", "_") as Type,
       priority: validatedData.priority.replace(" ", "_") as Priority,
       projectId,
-      tags: { connect: tagIds?.map((id) => ({ id })) || [] },
+      tags: { connect: tagIds.map((id) => ({ id })) },
     },
     include: taskDataInclude,
   });

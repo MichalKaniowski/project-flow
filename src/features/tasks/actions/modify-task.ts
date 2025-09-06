@@ -35,7 +35,7 @@ export const modifyTask = async ({
     data: {
       ...taskData,
       statusId: dbStatus.id,
-      tags: { set: tagIds?.map((id) => ({ id })) || [] },
+      tags: { set: tagIds.map((id) => ({ id })) },
     },
     include: taskDataInclude,
   });
