@@ -143,7 +143,7 @@ export const TaskCard = ({
             ))}
           </div>
 
-          <div className="mb-3">
+          <div className="space-x-1 mb-3">
             <Badge className={`text-xs ${getPriorityColor(task.priority)}`}>
               {task.priority}
             </Badge>
