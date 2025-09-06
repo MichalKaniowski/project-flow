@@ -37,7 +37,7 @@ export function KanbanBoard({ project }: { project: ProjectData }) {
         return (
           <div
             key={column.id}
-            className="flex flex-col min-w-80 overflow-y-auto"
+            className="flex flex-col w-[25%] min-w-80 overflow-y-auto"
           >
             <div className="flex justify-between items-center mb-4">
               <div className="flex items-center gap-2">
