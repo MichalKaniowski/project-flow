@@ -134,7 +134,7 @@ export const TaskCard = ({
         </CardHeader>
 
         <CardContent className="pt-0">
-          <p className="mb-3 text-gray-500 dark:text-gray-400 text-xs line-clamp-2">
+          <p className="mb-3 text-gray-500 dark:text-gray-400 text-xs line-clamp-2 whitespace-pre-wrap">
             {task.description}
           </p>
           <div className="flex flex-wrap gap-1 mb-3">
