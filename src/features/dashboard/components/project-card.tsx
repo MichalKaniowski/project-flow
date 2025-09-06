@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/primitives/card";
 import { Project } from "@/generated/prisma";
 import Image from "next/image";
 import Link from "next/link";
-import { ProjectCardOptions } from "./project-card-delete-dialog";
+import { ProjectCardOptions } from "./project-card-options";
 
 export const ProjectCard = ({ project }: { project: Project }) => {
   return (

@@ -19,10 +19,7 @@ export const useCreateTag = ({
   return useMutation({
     mutationFn: createTag,
     onSuccess: async (data) => {
-      toast.success(`Tag "${data?.tag?.name || ""}" added successfully`);
-
       await queryClient.cancelQueries({ queryKey });
-      const previousState = queryClient.getQueryData<TagsInfo>(queryKey);
       queryClient.setQueryData<TagsInfo>(queryKey, (prev) => {
         if (!prev) return { tags: [data.tag] };
         return {
@@ -30,7 +27,7 @@ export const useCreateTag = ({
         };
       });
 
-      return { previousState };
+      toast.success(`Tag "${data?.tag?.name || ""}" added successfully`);
     },
 
     onError: (error) => {

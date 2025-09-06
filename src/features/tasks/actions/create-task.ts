@@ -12,11 +12,11 @@ export const createTask = async ({ data, projectId }: CreateTaskArgs) => {
   const { user } = await validateRequest();
   if (!user) throw Error("Unauthorized");
 
-  const { status, tagIds, ...validatedData } = createTaskSchema.parse(data);
+  const { statusName, tagIds, ...validatedData } = createTaskSchema.parse(data);
   const dbStatus = await prisma.status.findUnique({
     where: {
       name_projectId: {
-        name: status,
+        name: statusName,
         projectId,
       },
     },

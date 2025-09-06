@@ -4,7 +4,7 @@ export const createTaskSchema = z.object({
   title: z.string().min(1, "Title is required"),
   assignee: z.string().min(1, "Assignee is required"),
   targetDate: z.date(),
-  status: z.string().min(1, "Status is required"),
+  statusName: z.string().min(1, "Status is required"),
   priority: z.enum(["Low", "Medium", "High"]),
   type: z.enum(["Feature", "Bug", "Task"]),
   description: z.string().optional(),

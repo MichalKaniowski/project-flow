@@ -1,5 +1,5 @@
 import { validateRequest } from "@/auth";
-import { CreateTaskSheet } from "@/features/tasks/components/create-task-sheet";
+import { CreateTaskSheet } from "@/features/tasks/components/create-task-sheet/create-task-sheet";
 import { KanbanBoard } from "@/features/tasks/components/kanban-board";
 import { prisma } from "@/lib/prisma";
 import { ProjectData, projectDataInclude } from "@/types";

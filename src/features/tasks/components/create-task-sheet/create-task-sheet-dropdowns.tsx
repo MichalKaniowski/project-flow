@@ -38,7 +38,7 @@ export const CreateTaskSheetDropdowns = ({
     <div className="flex items-center gap-2">
       <FormField
         control={form.control}
-        name="status"
+        name="statusName"
         render={({ field }) => (
           <FormItem>
             <FormLabel className="block">Status</FormLabel>
