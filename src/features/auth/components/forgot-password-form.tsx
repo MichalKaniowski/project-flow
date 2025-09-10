@@ -68,7 +68,7 @@ export const ForgotPasswordForm = ({
             control={form.control}
             name="email"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="mb-6">
                 <FormLabel>Email address</FormLabel>
                 <FormControl>
                   <Input
@@ -85,7 +85,7 @@ export const ForgotPasswordForm = ({
 
           <LoadingButton
             type="submit"
-            className="bg-foreground hover:bg-foreground/90 mt-4 w-full font-bold text-background"
+            className="bg-foreground hover:bg-foreground/90 w-full font-bold text-background"
             loading={isLoading}
           >
             {isLoading ? "Resetting..." : "Reset password"}

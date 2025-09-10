@@ -109,7 +109,7 @@ export const ResetPasswordForm = () => {
           <div className="mt-2">
             <LoadingButton
               type="submit"
-              className="bg-foreground hover:bg-foreground/90 mt-2 w-full font-bold text-background"
+              className="bg-foreground hover:bg-foreground/90 mt-6 w-full font-bold text-background"
               loading={isLoading}
             >
               {isLoading ? "Resetting..." : "Reset password"}
