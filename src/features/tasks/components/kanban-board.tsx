@@ -16,7 +16,6 @@ export function KanbanBoard({ project }: { project: ProjectData }) {
     tasks: initialTasks,
     statuses: projectStatuses,
   } = project;
-  // this query will be never called, it's for state managment only
   const {
     data: { columnsWithTasks },
   } = useQuery({

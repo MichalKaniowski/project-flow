@@ -12,8 +12,6 @@ export default async function MainLayout({
 }) {
   const session = await validateRequest();
 
-  // this is for convenience and user experience, auth checks in the layout should not be trusted
-  // the auth will be checked on the backend when getting data
   if (!session.user) redirect("/login");
 
   return (

@@ -42,7 +42,6 @@ export const TaskFormFields = ({
   onTagClick,
   onFormSubmit,
 }: TaskFormFieldsProps) => {
-  // this query will be never called, it's for state managment only
   const { data: tagsData } = useQuery({
     queryKey: taskQueryKeys.getTags(projectId),
     queryFn: () =>
