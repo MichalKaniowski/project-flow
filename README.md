@@ -44,7 +44,7 @@ Run `npm run dev` or `yarn dev` or `pnpm dev`
 
 ## Coding Guidelines
 
-- This project is built on featues architecture. Every features has it's own folders like components, actions, hooks, etc.
+- This project is built on features architecture. Every feature has it's own folders like components, actions, hooks, etc.
 
 - This project uses tanstack query and hooks like useQuery and useMutation for all it's state managment.
 
