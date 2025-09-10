@@ -21,7 +21,7 @@ export const useCreateTask = ({ projectId }: { projectId: string }) => {
             if (column.id === task.statusId) {
               return {
                 ...column,
-                tasks: [...column.tasks, task],
+                tasks: [task, ...column.tasks],
               };
             }
             return column;
