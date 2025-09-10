@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
@@ -13,14 +14,16 @@ import { useModifyTask } from "../hooks/use-modify-task";
 import { createTaskSchema, CreateTaskValues } from "../validation";
 import { TaskFormFields } from "./task-form-fields";
 
-export const ModifyTaskSheetContent = ({
+export const ModifyTaskSheet = ({
   project: { id: projectId, tags: initialTags },
   task,
-  onSheetClose,
+  isOpen,
+  onToggleOpen,
 }: {
   project: ProjectData;
   task: TaskData;
-  onSheetClose: (isOpen: boolean) => void;
+  isOpen: boolean;
+  onToggleOpen: (isOpen: boolean) => void;
 }) => {
   const { mutate: modifyTaskMutate, isPending: isModifyingTask } =
     useModifyTask({ projectId });
@@ -48,7 +51,7 @@ export const ModifyTaskSheetContent = ({
       {
         onSuccess: () => {
           form.reset();
-          onSheetClose(false);
+          onToggleOpen(false);
         },
       }
     );
@@ -64,7 +67,7 @@ export const ModifyTaskSheetContent = ({
   };
 
   return (
-    <>
+    <Sheet open={isOpen} onOpenChange={onToggleOpen}>
       <SheetContent className="min-w-full sm:min-w-[450px]">
         <SheetHeader className="mb-4">
           <SheetTitle>Modify Task</SheetTitle>
@@ -81,6 +84,6 @@ export const ModifyTaskSheetContent = ({
           onTagClick={handleTagClick}
         />
       </SheetContent>
-    </>
+    </Sheet>
   );
 };

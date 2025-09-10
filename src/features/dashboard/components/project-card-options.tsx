@@ -1,4 +1,3 @@
-import { Dialog, DialogTrigger } from "@/components/ui/primitives/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,7 +11,7 @@ import { useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { LuPin } from "react-icons/lu";
 import { usePinProject } from "../hooks/use-pin-project";
-import { ProjectDeleteDialogContent } from "./project-delete-dialog-content";
+import { DeleteProjectDialog } from "./delete-project-dialog";
 
 interface ProjectCardOptionsProps {
   project: Project;
@@ -33,7 +32,13 @@ export const ProjectCardOptions = ({ project }: ProjectCardOptionsProps) => {
   };
 
   return (
-    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+    <div>
+      <DeleteProjectDialog
+        projectId={project.id}
+        isOpen={isDialogOpen}
+        onToggleOpen={setIsDialogOpen}
+      />
+
       <DropdownMenu
         open={isDropdownMenuOpen}
         onOpenChange={setIsDropdownMenuOpen}
@@ -69,19 +74,14 @@ export const ProjectCardOptions = ({ project }: ProjectCardOptionsProps) => {
             </Link>
           </DropdownMenuItem>
 
-          <DropdownMenuItem asChild>
-            <DialogTrigger className="w-full text-destructive focus:text-destructive/80 cursor-pointer">
+          <DropdownMenuItem asChild onClick={() => setIsDialogOpen(true)}>
+            <div className="flex items-center gap-2 text-red-500 cursor-pointer">
               <Trash2 size={14} />
               Delete
-            </DialogTrigger>
+            </div>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-
-      <ProjectDeleteDialogContent
-        projectId={project.id}
-        onDialogClose={() => setIsDialogOpen(false)}
-      />
-    </Dialog>
+    </div>
   );
 };

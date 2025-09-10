@@ -4,7 +4,13 @@ import { toast } from "sonner";
 import { deleteTask } from "../actions/delete-task";
 import { taskQueryKeys } from "../task-query-key-factory";
 
-export const useDeleteTask = (projectId: string) => {
+export const useDeleteTask = ({
+  projectId,
+  onClose,
+}: {
+  projectId: string;
+  onClose: () => void;
+}) => {
   const queryClient = useQueryClient();
   const queryKey = taskQueryKeys.getColumns(projectId);
 
@@ -32,6 +38,7 @@ export const useDeleteTask = (projectId: string) => {
       });
 
       toast.success("Deleted task succesfully");
+      onClose();
     },
     onError: (error) => {
       toast.error(error.message);

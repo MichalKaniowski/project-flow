@@ -12,7 +12,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/primitives/dropdown-menu";
-import { Sheet, SheetTrigger } from "@/components/ui/primitives/sheet";
 import { TaskTag } from "@/features/tasks/components/task-tag";
 import { Priority, Type } from "@/generated/prisma";
 import { formatDate } from "@/lib/utils";
@@ -27,9 +26,9 @@ import {
 import { useState } from "react";
 import { IoDuplicate } from "react-icons/io5";
 import { TbEdit } from "react-icons/tb";
-import { useDeleteTask } from "../hooks/use-delete-task";
 import { useDuplicateTask } from "../hooks/use-duplicate-task";
-import { ModifyTaskSheetContent } from "./modify-task-sheet-content";
+import { ModifyTaskSheet } from "./modify-task-sheet";
+import { TaskDeleteDialog } from "./task-delete-dialog";
 
 const getPriorityColor = (priority: Priority) => {
   switch (priority) {
@@ -65,16 +64,13 @@ export const TaskCard = ({
   project: ProjectData;
 }) => {
   const { id: projectId } = project;
-  const { mutate: deleteTaskMutate } = useDeleteTask(projectId);
   const { mutate: duplicateTaskMutate } = useDuplicateTask(projectId);
+
   const [isModifyTaskSheetOpen, setIsModifyTaskSheetOpen] = useState(false);
+  const [isDeleteTaskDialogOpen, setIsDeleteTaskDialogOpen] = useState(false);
 
   const handleTaskDuplicate = () => {
     duplicateTaskMutate(task);
-  };
-
-  const handleTaskDelete = () => {
-    deleteTaskMutate(task.id);
   };
 
   return (
@@ -86,50 +82,53 @@ export const TaskCard = ({
               {task.title}
             </CardTitle>
 
-            {/* the Sheet and SheetTrigger componenets are part of ModifyTaskSheetContent, */}
-            {/* but had to be placed outside of DropdownMenu to avoid closing the sheet when DropdownMenu closes */}
-            <Sheet
-              open={isModifyTaskSheetOpen}
-              onOpenChange={setIsModifyTaskSheetOpen}
-            >
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm" className="p-0 w-6 h-6">
-                    <MoreHorizontal className="w-3 h-3" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="cursor-pointer">
-                  <DropdownMenuItem
-                    onClick={handleTaskDuplicate}
-                    className="text-blue-200"
-                  >
-                    <IoDuplicate size={10} />
-                    Duplicate
-                  </DropdownMenuItem>
+            <ModifyTaskSheet
+              task={task}
+              project={project}
+              isOpen={isModifyTaskSheetOpen}
+              onToggleOpen={setIsModifyTaskSheetOpen}
+            />
 
-                  <SheetTrigger asChild>
-                    <DropdownMenuItem className="text-orange-200">
-                      {/* <MdEditSquare size={16} /> */}
-                      <TbEdit size={16} />
-                      Modify
-                    </DropdownMenuItem>
-                  </SheetTrigger>
+            <TaskDeleteDialog
+              taskId={task.id}
+              projectId={projectId}
+              isOpen={isDeleteTaskDialogOpen}
+              onToggleOpen={setIsDeleteTaskDialogOpen}
+            />
 
-                  <DropdownMenuItem
-                    onClick={handleTaskDelete}
-                    className="text-red-500"
-                  >
-                    <Trash2 size={14} />
-                    Delete
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-              <ModifyTaskSheetContent
-                task={task}
-                project={project}
-                onSheetClose={setIsModifyTaskSheetOpen}
-              />
-            </Sheet>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="p-0 w-6 h-6">
+                  <MoreHorizontal className="w-3 h-3" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="cursor-pointer">
+                <DropdownMenuItem
+                  onClick={handleTaskDuplicate}
+                  className="text-blue-200"
+                >
+                  <IoDuplicate size={10} />
+                  Duplicate
+                </DropdownMenuItem>
+
+                <DropdownMenuItem
+                  className="text-orange-200"
+                  onClick={() => setIsModifyTaskSheetOpen(true)}
+                >
+                  {/* <MdEditSquare size={16} /> */}
+                  <TbEdit size={16} />
+                  Modify
+                </DropdownMenuItem>
+
+                <DropdownMenuItem
+                  className="text-red-500"
+                  onClick={() => setIsDeleteTaskDialogOpen(true)}
+                >
+                  <Trash2 size={14} />
+                  Delete
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </CardHeader>
 
