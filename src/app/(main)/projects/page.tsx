@@ -47,7 +47,7 @@ export default function ProjectsPage() {
           />
           <CreateProjectSheet />
         </div>
-        <div className="space-y-3">
+        <div className="space-y-4">
           {!!pinnedProjects?.length && (
             <ProjectsList projects={pinnedProjects} listName="Pinned" />
           )}
