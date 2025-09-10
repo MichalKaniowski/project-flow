@@ -49,36 +49,39 @@ export const NavItems = () => {
 
 export const SideNav = () => {
   const navItems = NavItems();
-
-  const [isSidebarExpanded, setIsSidebarExpanded] = useState(() => {
-    if (typeof window !== "undefined") {
-      const saved = window.localStorage.getItem("sidebarExpanded");
-      if (saved === null) {
-        return true;
-      }
-      return JSON.parse(saved);
-    }
-    return true;
-  });
+  const [isCollapsed, setIsCollapsed] = useState<boolean | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     if (typeof window !== "undefined") {
+      const saved = window.localStorage.getItem("sidebarCollapsed");
+      setIsCollapsed(saved !== null ? JSON.parse(saved) : false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isCollapsed !== undefined && typeof window !== "undefined") {
       window.localStorage.setItem(
-        "sidebarExpanded",
-        JSON.stringify(isSidebarExpanded)
+        "sidebarCollapsed",
+        JSON.stringify(isCollapsed)
       );
     }
-  }, [isSidebarExpanded]);
+  }, [isCollapsed]);
+
+  if (isCollapsed === undefined) {
+    return null;
+  }
 
   const toggleSidebar = () => {
-    setIsSidebarExpanded(!isSidebarExpanded);
+    setIsCollapsed(!isCollapsed);
   };
 
   return (
     <div className="pr-4">
       <div
         className={cn(
-          isSidebarExpanded ? "w-[200px]" : "w-[68px]",
+          !isCollapsed ? "w-[200px]" : "w-[68px]",
           "border-r transition-all duration-300 ease-in-out transform hidden sm:flex h-full"
         )}
       >
@@ -96,7 +99,7 @@ export const SideNav = () => {
                           icon={item.icon}
                           path={item.href}
                           active={item.active}
-                          isSidebarExpanded={isSidebarExpanded}
+                          isSidebarExpanded={!isCollapsed}
                         />
                       </div>
                     </Fragment>
@@ -117,7 +120,7 @@ export const SideNav = () => {
                         icon={item.icon}
                         path={item.href}
                         active={item.active}
-                        isSidebarExpanded={isSidebarExpanded}
+                        isSidebarExpanded={!isCollapsed}
                       />
                     </div>
                   </Fragment>
@@ -132,7 +135,7 @@ export const SideNav = () => {
             className="right-[-12px] bottom-32 absolute flex justify-center items-center bg-accent shadow-md hover:shadow-lg border border-muted-foreground/20 rounded-full w-6 h-6 transition-shadow duration-300 ease-in-out"
             onClick={toggleSidebar}
           >
-            {isSidebarExpanded ? (
+            {!isCollapsed ? (
               <ChevronLeft size={16} className="stroke-foreground" />
             ) : (
               <ChevronRight size={16} className="stroke-foreground" />
