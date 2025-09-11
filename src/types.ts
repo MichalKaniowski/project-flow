@@ -1,9 +1,12 @@
 import { Prisma, Status, Tag } from "./generated/prisma";
 
+export type ProjectData = Prisma.ProjectGetPayload<{
+  include: typeof projectDataInclude;
+}>;
+
 export interface ProjectsListInfo {
   projects: ProjectData[];
 }
-
 export interface ColumnWithTasks {
   id: string;
   name: string;
@@ -36,6 +39,3 @@ export const projectDataInclude = {
   tags: true,
   statuses: true,
 };
-export type ProjectData = Prisma.ProjectGetPayload<{
-  include: typeof projectDataInclude;
-}>;
