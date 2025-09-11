@@ -8,7 +8,7 @@ export const DangerzoneSettingsTab = () => {
       <SettingsCard title="Delete Project" isDangerZone>
         <div>
           <p className="mb-6 text-muted-foreground">
-            You can delete your project if you're done with it
+            You can delete your project if you&apos;re done with it
           </p>
           <Button variant="destructive">Delete project</Button>
         </div>
