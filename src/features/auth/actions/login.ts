@@ -8,52 +8,42 @@ import { redirect } from "next/navigation";
 import { LoginValues, loginSchema } from "../validation";
 
 export const login = async (credentials: LoginValues) => {
-  try {
-    const { email, password } = loginSchema.parse(credentials);
-    const existingUser = await prisma.user.findFirst({
-      where: {
-        email: {
-          equals: email,
-          mode: "insensitive",
-        },
+  const { email, password } = loginSchema.parse(credentials);
+  const existingUser = await prisma.user.findFirst({
+    where: {
+      email: {
+        equals: email,
+        mode: "insensitive",
       },
-      select: {
-        id: true,
-        passwordHash: true,
-      },
-    });
+    },
+    select: {
+      id: true,
+      passwordHash: true,
+    },
+  });
 
-    if (!existingUser || !existingUser.passwordHash) {
-      return {
-        error: "Incorrect email or password",
-      };
-    }
-
-    const validPassword = await verify(existingUser.passwordHash, password, {
-      memoryCost: 19456,
-      timeCost: 2,
-      outputLen: 32,
-      parallelism: 1,
-    });
-
-    if (!validPassword) {
-      return {
-        error: "Incorrect email or password",
-      };
-    }
-
-    const session = await lucia.createSession(existingUser.id, {});
-    const sessionCookie = lucia.createSessionCookie(session.id);
-    (await cookies()).set(
-      sessionCookie.name,
-      sessionCookie.value,
-      sessionCookie.attributes
-    );
-    redirect("/projects");
-  } catch (error) {
-    console.error(error);
-    return {
-      error: "Something went wrong. Please try again.",
-    };
+  if (!existingUser || !existingUser.passwordHash) {
+    throw new Error("Incorrect email or password");
   }
+
+  const validPassword = await verify(existingUser.passwordHash, password, {
+    memoryCost: 19456,
+    timeCost: 2,
+    outputLen: 32,
+    parallelism: 1,
+  });
+
+  if (!validPassword) {
+    throw new Error("Incorrect email or password");
+  }
+
+  const session = await lucia.createSession(existingUser.id, {});
+  const sessionCookie = lucia.createSessionCookie(session.id);
+  (await cookies()).set(
+    sessionCookie.name,
+    sessionCookie.value,
+    sessionCookie.attributes
+  );
+
+  redirect("/projects");
 };
