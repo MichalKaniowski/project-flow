@@ -12,18 +12,13 @@ const SessionContext = createContext<SessionContext | null>(null);
 
 export const SessionProvider = ({
   children,
-}: {
-  children: React.ReactNode;
-}) => {
-  const [user, setUser] = useState<User | null>(null);
+  user: initialUser,
+}: React.PropsWithChildren<{ user: User }>) => {
+  const [user, setUser] = useState<User | null>(initialUser);
 
   useEffect(() => {
-    supabaseClient.auth.getSession().then(({ data }) => {
-      setUser(data.session?.user ?? null);
-    });
-
     const { data: authListener } = supabaseClient.auth.onAuthStateChange(
-      (event, session) => {
+      (_, session) => {
         setUser(session?.user ?? null);
       },
     );
